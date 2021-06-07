@@ -1,10 +1,14 @@
 package tw.edu.nptu.bbox
 
 import android.content.Context
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.animation.*
+
 import androidx.constraintlayout.widget.ConstraintLayout
+
 import tw.edu.nptu.bbox.databinding.BottleLayoutBinding
 
 class BottleView(context: Context, attrs: AttributeSet) : ConstraintLayout(context, attrs) {
@@ -15,6 +19,14 @@ class BottleView(context: Context, attrs: AttributeSet) : ConstraintLayout(conte
     private val interpolator = AccelerateDecelerateInterpolator()
 
     private var duration = 1500L
+
+    fun setColor(bottleColor: BottleColor){
+        binding.bottleTop.backgroundTintList = ColorStateList.valueOf(Color.parseColor(bottleColor.top))
+        binding.bottleBody.backgroundTintList = ColorStateList.valueOf(Color.parseColor(bottleColor.body))
+        binding.bottom.backgroundTintList = ColorStateList.valueOf(Color.parseColor(bottleColor.waterBody))
+        binding.waterTop.backgroundTintList = ColorStateList.valueOf(Color.parseColor(bottleColor.waterTop))
+        binding.waterBody.backgroundTintList = ColorStateList.valueOf(Color.parseColor(bottleColor.waterBody))
+    }
 
     fun setLevel(level: Float) {
         // scale water body
@@ -43,6 +55,5 @@ class BottleView(context: Context, attrs: AttributeSet) : ConstraintLayout(conte
         translateAnimation.fillAfter = true
         translateAnimation.interpolator = interpolator
         binding.waterTop.startAnimation(translateAnimation)
-
     }
 }
