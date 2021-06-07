@@ -15,4 +15,13 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <tw.edu.nptu.bbox.BottleView
+        android:id="@+id/bottle_view"
+        android:layout_width="121dp"
+        android:layout_height="253dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
