@@ -2,23 +2,19 @@ package tw.edu.nptu.bbox
 
 import android.content.Context
 import android.util.AttributeSet
-import android.view.View
+import android.view.LayoutInflater
 import android.view.animation.*
 import androidx.constraintlayout.widget.ConstraintLayout
+import tw.edu.nptu.bbox.databinding.BottleLayoutBinding
 
 class BottleView(context: Context, attrs: AttributeSet) : ConstraintLayout(context, attrs) {
 
-    private lateinit var body: View
-    private lateinit var waterTop: View
+    private val binding: BottleLayoutBinding =
+        BottleLayoutBinding.inflate(LayoutInflater.from(context), this, true)
+
     private val interpolator = AccelerateDecelerateInterpolator()
 
     private var duration = 1500L
-
-    init {
-        View.inflate(context, R.layout.bottle_layout, this)
-        body = findViewById(R.id.water_body)
-        waterTop = findViewById(R.id.water_top)
-    }
 
     fun setLevel(level: Float) {
         // scale water body
@@ -32,7 +28,8 @@ class BottleView(context: Context, attrs: AttributeSet) : ConstraintLayout(conte
         scaleAnimation.duration = duration
         scaleAnimation.fillAfter = true
         scaleAnimation.interpolator = interpolator
-        body.startAnimation(scaleAnimation)
+        binding.waterBody.startAnimation(scaleAnimation)
+
 
         // translate water top
         val translateAnimation = TranslateAnimation(
@@ -45,7 +42,7 @@ class BottleView(context: Context, attrs: AttributeSet) : ConstraintLayout(conte
         translateAnimation.duration = duration
         translateAnimation.fillAfter = true
         translateAnimation.interpolator = interpolator
-        waterTop.startAnimation(translateAnimation)
+        binding.waterTop.startAnimation(translateAnimation)
 
     }
 }
