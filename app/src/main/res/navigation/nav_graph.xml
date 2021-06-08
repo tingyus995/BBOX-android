@@ -7,7 +7,21 @@
 
     <fragment
         android:id="@+id/bottleList"
-        android:name="tw.edu.nptu.bbox.BottleList"
+        android:name="tw.edu.nptu.bbox.bottlelist.BottleListFragment"
         android:label="fragment_bottle_list"
-        tools:layout="@layout/fragment_bottle_list" />
+        tools:layout="@layout/fragment_bottle_list" >
+        <action
+            android:id="@+id/action_bottleList_to_bottleDetailFragment"
+            app:destination="@id/bottleDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/bottleDetailFragment"
+        android:name="tw.edu.nptu.bbox.bottledetail.BottleDetailFragment"
+        android:label="fragment_bottle_detail"
+        tools:layout="@layout/fragment_bottle_detail" >
+        <argument
+            android:name="bottleId"
+            app:argType="integer"
+            android:defaultValue="0" />
+    </fragment>
 </navigation>

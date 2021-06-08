@@ -1,79 +1,89 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    android:id="@+id/card_view"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_margin="10dp"
-    android:translationZ="5dp"
-    app:cardCornerRadius="20dp">
+    <data>
+        <variable
+            name="bottle"
+            type="tw.edu.nptu.bbox.BottleModel" />
+        <variable
+            name="clickListener"
+            type="tw.edu.nptu.bbox.bottlelist.BottleCardClickListener" />
+    </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.cardview.widget.CardView
+
+        android:id="@+id/card_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:elevation="5dp"
-        android:paddingHorizontal="15dp"
-        android:paddingVertical="15dp">
+        android:layout_margin="10dp"
+        android:translationZ="5dp"
+        app:cardCornerRadius="20dp"
+        >
 
-
-        <tw.edu.nptu.bbox.BottleView
-            android:id="@+id/bottleView"
-            android:layout_width="45dp"
-            android:layout_height="100dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/name"
-            android:layout_width="wrap_content"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:fontFamily="sans-serif-medium"
-            android:textSize="25sp"
-            app:layout_constraintStart_toEndOf="@+id/bottleView"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="Apple Juice" />
-
-        <TextView
-            android:id="@+id/percent_left"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:fontFamily="sans-serif-medium"
-            android:textSize="50sp"
-            app:layout_constraintStart_toEndOf="@+id/bottleView"
-            app:layout_constraintTop_toBottomOf="@+id/name"
-            tools:text="76" />
+            android:elevation="5dp"
+            android:paddingHorizontal="15dp"
+            android:paddingVertical="15dp"
+            android:onClick="@{() -> clickListener.onClick(bottle)}"
+            >
 
 
-        <TextView
+            <tw.edu.nptu.bbox.BottleView
+                android:id="@+id/bottleView"
+                android:layout_width="45dp"
+                android:layout_height="100dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="% Left"
-            android:textSize="20sp"
-            app:layout_constraintBaseline_toBaselineOf="@+id/percent_left"
-            app:layout_constraintStart_toEndOf="@+id/percent_left" />
+            <TextView
+                android:id="@+id/name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:fontFamily="sans-serif-medium"
+                android:textSize="25sp"
+                app:layout_constraintStart_toEndOf="@+id/bottleView"
+                app:layout_constraintTop_toTopOf="parent"
+                android:text="@{bottle.name}"
+                tools:text="Apple Juice" />
 
-        <TextView
-            android:id="@+id/msg"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:textSize="18sp"
-            app:layout_constraintStart_toEndOf="@+id/bottleView"
-            app:layout_constraintTop_toBottomOf="@+id/percent_left"
-            tools:text="Until 4:30 p.m." />
+            <TextView
+                android:id="@+id/percent_left"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:fontFamily="sans-serif-medium"
+                android:textSize="50sp"
+                app:layout_constraintStart_toEndOf="@+id/bottleView"
+                app:layout_constraintTop_toBottomOf="@+id/name"
+                app:bottlePercent="@{bottle.percentLeft}"
+                tools:text="76" />
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="% Left"
+                android:textSize="20sp"
+                app:layout_constraintBaseline_toBaselineOf="@+id/percent_left"
+                app:layout_constraintStart_toEndOf="@+id/percent_left" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/msg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:textSize="18sp"
+                app:layout_constraintStart_toEndOf="@+id/bottleView"
+                app:layout_constraintTop_toBottomOf="@+id/percent_left"
+                android:text="@{bottle.msg}"
+                tools:text="Until 4:30 p.m." />
 
-
-</androidx.cardview.widget.CardView>
-
-
-
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+</layout>
