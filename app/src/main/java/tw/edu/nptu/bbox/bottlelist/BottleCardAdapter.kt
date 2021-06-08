@@ -31,6 +31,10 @@ class BottleCardAdapter(val clickListener: BottleCardClickListener): ListAdapter
             binding.bottleView.setColor(model.color)
             binding.bottleView.setLevel(model.percentLeft)
             binding.clickListener = clickListener
+            binding.mainLayout.setOnClickListener {
+                clickListener.onClick(binding, model)
+            }
+            binding.executePendingBindings()
         }
 
         companion object {
@@ -53,8 +57,8 @@ class BottleModelDiffCallback: DiffUtil.ItemCallback<BottleModel>(){
     }
 }
 
-class BottleCardClickListener(val clickListener: (bottleId: Int) -> Unit){
-    fun onClick(model: BottleModel) = clickListener(model.id)
+class BottleCardClickListener(val clickListener: (binding: BottleCardBinding, bottleId: Int) -> Unit){
+    fun onClick(binding: BottleCardBinding, model: BottleModel) = clickListener(binding, model.id)
 }
 
 @BindingAdapter("bottlePercent")

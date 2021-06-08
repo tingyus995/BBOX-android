@@ -28,7 +28,8 @@ class BottleView(context: Context, attrs: AttributeSet) : ConstraintLayout(conte
         binding.waterBody.backgroundTintList = ColorStateList.valueOf(Color.parseColor(bottleColor.waterBody))
     }
 
-    fun setLevel(level: Float) {
+    fun setLevel(level: Float, animate: Boolean = true) {
+        val ani_duration = if(animate) duration else 0
         // scale water body
         val scaleAnimation = ScaleAnimation(
             1.0f, 1.0f,
@@ -37,7 +38,7 @@ class BottleView(context: Context, attrs: AttributeSet) : ConstraintLayout(conte
             Animation.RELATIVE_TO_SELF, 1.0f
         )
 
-        scaleAnimation.duration = duration
+        scaleAnimation.duration = ani_duration
         scaleAnimation.fillAfter = true
         scaleAnimation.interpolator = interpolator
         binding.waterBody.startAnimation(scaleAnimation)
@@ -51,7 +52,7 @@ class BottleView(context: Context, attrs: AttributeSet) : ConstraintLayout(conte
             Animation.RELATIVE_TO_PARENT, (0.9f - level * 0.9f)
         )
 
-        translateAnimation.duration = duration
+        translateAnimation.duration = ani_duration
         translateAnimation.fillAfter = true
         translateAnimation.interpolator = interpolator
         binding.waterTop.startAnimation(translateAnimation)

@@ -23,17 +23,19 @@
         >
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/main_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:elevation="5dp"
             android:paddingHorizontal="15dp"
             android:paddingVertical="15dp"
-            android:onClick="@{() -> clickListener.onClick(bottle)}"
+            android:foreground="?attr/selectableItemBackground"
             >
 
 
             <tw.edu.nptu.bbox.BottleView
                 android:id="@+id/bottleView"
+                android:transitionName='@{"bottle_view_" + bottle.id}'
                 android:layout_width="45dp"
                 android:layout_height="100dp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -50,6 +52,7 @@
                 app:layout_constraintStart_toEndOf="@+id/bottleView"
                 app:layout_constraintTop_toTopOf="parent"
                 android:text="@{bottle.name}"
+                android:transitionName='@{"bottle_name_" + bottle.id}'
                 tools:text="Apple Juice" />
 
             <TextView
@@ -62,13 +65,16 @@
                 app:layout_constraintStart_toEndOf="@+id/bottleView"
                 app:layout_constraintTop_toBottomOf="@+id/name"
                 app:bottlePercent="@{bottle.percentLeft}"
+                android:transitionName='@{"bottle_percent_" + bottle.id}'
                 tools:text="76" />
 
             <TextView
+                android:id="@+id/percent_left_symbol"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="% Left"
                 android:textSize="20sp"
+                android:transitionName='@{"bottle_percent_left_" + bottle.id}'
                 app:layout_constraintBaseline_toBaselineOf="@+id/percent_left"
                 app:layout_constraintStart_toEndOf="@+id/percent_left" />
 
