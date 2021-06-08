@@ -21,7 +21,6 @@
         tools:layout="@layout/fragment_bottle_detail" >
         <argument
             android:name="bottleId"
-            app:argType="integer"
-            android:defaultValue="0" />
+            app:argType="integer" />
     </fragment>
 </navigation>
