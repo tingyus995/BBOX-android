@@ -1,6 +1,7 @@
 package tw.edu.nptu.bbox.bottledetail
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -13,8 +14,11 @@ import androidx.transition.TransitionInflater
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
+import com.github.mikephil.charting.highlight.Highlight
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import tw.edu.nptu.bbox.R
 import tw.edu.nptu.bbox.databinding.FragmentBottleDetailBinding
+import kotlin.math.roundToInt
 
 class BottleDetailFragment : Fragment() {
 
@@ -73,11 +77,25 @@ class BottleDetailFragment : Fragment() {
         binding.chart.data = linedata
         val marker = SelectedMarker(context!!)
         binding.chart.marker = marker
+
+
+        binding.chart.setOnChartValueSelectedListener(object : OnChartValueSelectedListener{
+            override fun onValueSelected(e: Entry?, h: Highlight?) {
+                if (e != null) {
+                    binding.bottleView.setLevel(e.y)
+                    binding.percentLeft.text = (e.y * 100).roundToInt().toString()
+                }
+            }
+
+            override fun onNothingSelected() {
+
+            }
+
+        })
+
         binding.chart.invalidate()
-
-
-
 
         return binding.root
     }
 }
+
