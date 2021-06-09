@@ -5,10 +5,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat.getColor
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import androidx.transition.TransitionInflater
+import com.github.mikephil.charting.data.Entry
+import com.github.mikephil.charting.data.LineData
+import com.github.mikephil.charting.data.LineDataSet
 import tw.edu.nptu.bbox.R
 import tw.edu.nptu.bbox.databinding.FragmentBottleDetailBinding
 
@@ -52,6 +56,25 @@ class BottleDetailFragment : Fragment() {
             binding.executePendingBindings()
             startPostponedEnterTransition()
         })
+
+        val entries = listOf<Entry>(Entry(1F, 0.8F), Entry(2F, 0.4F), Entry(3F, 0.2F), Entry(4F,0.8F))
+        val dataset = LineDataSet(entries, "data")
+        dataset.circleRadius = 10f
+        dataset.circleHoleRadius = 7f
+        dataset.circleColors = listOf(context?.let { getColor(it, R.color.purple_200) })
+        dataset.lineWidth = 3f
+        //dataset.isHighlightEnabled = false
+        dataset.color = context?.let { getColor(it, R.color.purple_200) }!!
+
+
+
+
+        val linedata = LineData(dataset)
+        binding.chart.data = linedata
+        val marker = SelectedMarker(context!!)
+        binding.chart.marker = marker
+        binding.chart.invalidate()
+
 
 
 
