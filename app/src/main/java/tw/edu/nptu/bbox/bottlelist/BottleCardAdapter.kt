@@ -57,7 +57,7 @@ class BottleModelDiffCallback: DiffUtil.ItemCallback<BottleModel>(){
     }
 }
 
-class BottleCardClickListener(val clickListener: (binding: BottleCardBinding, bottleId: Int) -> Unit){
+class BottleCardClickListener(val clickListener: (binding: BottleCardBinding, bottleId: String) -> Unit){
     fun onClick(binding: BottleCardBinding, model: BottleModel) = clickListener(binding, model.id)
 }
 

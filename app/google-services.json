@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "41776057847",
+    "project_id": "bbox-4f13c",
+    "storage_bucket": "bbox-4f13c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:41776057847:android:89ea161f8325ee1ec8f2f2",
+        "android_client_info": {
+          "package_name": "tw.edu.nptu.bbox"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "41776057847-lpe312kfo5lvibafgm314tt963kdhdkh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyACeIYyK0zXVdWchANCYkLKwrS_NionRjE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "41776057847-lpe312kfo5lvibafgm314tt963kdhdkh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -10,4 +10,4 @@ object BottleColors{
     val blue = BottleColor("#dfe9fb", "#c9daf8", "#a7c5f3", "#6d9eeb")
 }
 
-data class BottleModel(val id: Int, val name: String, val color: BottleColor, val percentLeft: Float, val msg: String)
+data class BottleModel(val id: String, val name: String, val color: BottleColor, val percentLeft: Float, val msg: String)
