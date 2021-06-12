@@ -18,6 +18,8 @@ import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import tw.edu.nptu.bbox.R
 import tw.edu.nptu.bbox.databinding.FragmentBottleDetailBinding
+import java.text.SimpleDateFormat
+import java.util.*
 import kotlin.math.roundToInt
 
 class BottleDetailFragment : Fragment() {
@@ -25,6 +27,7 @@ class BottleDetailFragment : Fragment() {
     private lateinit var binding: FragmentBottleDetailBinding
     private lateinit var viewModel: BottleDetailViewModel
     private lateinit var viewModelFactory: BottleDetailViewModelFactory
+    private val axisFormatter = DateTimeAxisFormatter(0L)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,41 +64,60 @@ class BottleDetailFragment : Fragment() {
             startPostponedEnterTransition()
         })
 
-        val entries = listOf<Entry>(Entry(1F, 0.8F), Entry(2F, 0.4F), Entry(3F, 0.2F), Entry(4F,0.8F))
-        val dataset = LineDataSet(entries, "data")
-        dataset.circleRadius = 10f
-        dataset.circleHoleRadius = 7f
-        dataset.circleColors = listOf(context?.let { getColor(it, R.color.purple_200) })
-        dataset.lineWidth = 3f
-        //dataset.isHighlightEnabled = false
-        dataset.color = context?.let { getColor(it, R.color.purple_200) }!!
+        viewModel.history.observe(viewLifecycleOwner, Observer { entries ->
+            val dataset = LineDataSet(entries, "data")
+            dataset.circleRadius = 10f
+            dataset.circleHoleRadius = 7f
+            dataset.circleColors = listOf(context?.let { getColor(it, R.color.purple_200) })
+            dataset.lineWidth = 3f
+            //dataset.isHighlightEnabled = false
+            dataset.color = context?.let { getColor(it, R.color.purple_200) }!!
+            val linedata = LineData(dataset)
+            binding.chart.data = linedata
+            binding.chart.invalidate()
+            Log.d("DEBUG",entries.toString())
+            applyBottleInfo(entries.last())
+        })
 
+        binding.chart.xAxis.valueFormatter = axisFormatter
 
+        viewModel.baseTime.observe(viewLifecycleOwner, Observer { baseTime ->
+            axisFormatter.baseTime = baseTime
+            binding.chart.invalidate()
+        })
 
-
-        val linedata = LineData(dataset)
-        binding.chart.data = linedata
         val marker = SelectedMarker(context!!)
         binding.chart.marker = marker
-
+        binding.chart.axisLeft.axisMaximum = 1.0f
+        binding.chart.axisLeft.axisMinimum = 0.0f
 
         binding.chart.setOnChartValueSelectedListener(object : OnChartValueSelectedListener{
             override fun onValueSelected(e: Entry?, h: Highlight?) {
                 if (e != null) {
-                    binding.bottleView.setLevel(e.y)
-                    binding.percentLeft.text = (e.y * 100).roundToInt().toString()
+                    applyBottleInfo(e)
                 }
             }
 
             override fun onNothingSelected() {
-
+                val history = viewModel.history.value
+                if(history != null){
+                    val entry = history.last()
+                    applyBottleInfo(entry)
+                }
             }
-
         })
-
-        binding.chart.invalidate()
 
         return binding.root
     }
-}
 
+    fun applyBottleInfo(e: Entry){
+        val percentLeft = e.y
+        val timeDelta = e.x
+        val date = axisFormatter.getDate(timeDelta)
+
+        binding.bottleView.setLevel(percentLeft)
+        binding.percentLeft.text = (percentLeft * 100).roundToInt().toString()
+        binding.timeText.text =  SimpleDateFormat("HH:mm").format(date)
+        binding.dateText.text = SimpleDateFormat("MM/dd").format(date)
+    }
+}
