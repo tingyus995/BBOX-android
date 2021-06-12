@@ -27,6 +27,8 @@ class BottleDetailViewModel(val bottleId: String) : ViewModel() {
     val baseTime: LiveData<Long>
     get() = _baseTime
 
+    private var first = true
+
     init {
         val db = Firebase.firestore
 
@@ -54,7 +56,7 @@ class BottleDetailViewModel(val bottleId: String) : ViewModel() {
 
             db.collection("bottles").document(bottleId).collection("history").orderBy("time", Query.Direction.ASCENDING).addSnapshotListener { snapshot, e ->
                 val entries = mutableListOf<Entry>()
-                var first = true
+
                 var base = 0L
                 if (snapshot != null) {
                     for(document in snapshot.documents){

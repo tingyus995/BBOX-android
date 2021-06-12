@@ -74,9 +74,12 @@ class BottleDetailFragment : Fragment() {
             dataset.color = context?.let { getColor(it, R.color.purple_200) }!!
             val linedata = LineData(dataset)
             binding.chart.data = linedata
+            binding.chart.notifyDataSetChanged()
             binding.chart.invalidate()
+
             Log.d("DEBUG",entries.toString())
-            applyBottleInfo(entries.last())
+            highlightAndSelectLast(entries)
+
         })
 
         binding.chart.xAxis.valueFormatter = axisFormatter
@@ -101,8 +104,7 @@ class BottleDetailFragment : Fragment() {
             override fun onNothingSelected() {
                 val history = viewModel.history.value
                 if(history != null){
-                    val entry = history.last()
-                    applyBottleInfo(entry)
+                    highlightAndSelectLast(history)
                 }
             }
         })
@@ -119,5 +121,15 @@ class BottleDetailFragment : Fragment() {
         binding.percentLeft.text = (percentLeft * 100).roundToInt().toString()
         binding.timeText.text =  SimpleDateFormat("HH:mm").format(date)
         binding.dateText.text = SimpleDateFormat("MM/dd").format(date)
+    }
+
+    fun highlightAndSelectLast(entries: List<Entry>){
+        if(entries.isNotEmpty()){
+            val last = entries.last()
+            applyBottleInfo(last)
+            val highlight = Highlight(last.x, last.y, 0)
+            highlight.dataIndex = entries.size - 1
+            binding.chart.highlightValue(highlight)
+        }
     }
 }
