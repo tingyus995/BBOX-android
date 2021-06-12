@@ -84,7 +84,7 @@ class BottleDetailFragment : Fragment() {
             binding.chart.notifyDataSetChanged()
             binding.chart.invalidate()
 
-            Log.d("DEBUG",entries.toString())
+            Log.d("DEBUG", entries.toString())
             highlightAndSelectLast(entries)
 
         })
@@ -114,6 +114,7 @@ class BottleDetailFragment : Fragment() {
         binding.chart.xAxis.valueFormatter = axisFormatter
         binding.chart.axisLeft.valueFormatter = PercentAxisFormatter()
 
+
         viewModel.baseTime.observe(viewLifecycleOwner, Observer { baseTime ->
             axisFormatter.baseTime = baseTime
             binding.chart.invalidate()
@@ -124,7 +125,7 @@ class BottleDetailFragment : Fragment() {
         binding.chart.axisLeft.axisMaximum = 1.0f
         binding.chart.axisLeft.axisMinimum = 0.0f
 
-        binding.chart.setOnChartValueSelectedListener(object : OnChartValueSelectedListener{
+        binding.chart.setOnChartValueSelectedListener(object : OnChartValueSelectedListener {
             override fun onValueSelected(e: Entry?, h: Highlight?) {
                 if (e != null) {
                     applyBottleInfo(e)
@@ -133,7 +134,7 @@ class BottleDetailFragment : Fragment() {
 
             override fun onNothingSelected() {
                 val history = viewModel.history.value
-                if(history != null){
+                if (history != null) {
                     highlightAndSelectLast(history)
                 }
             }
@@ -142,24 +143,26 @@ class BottleDetailFragment : Fragment() {
         return binding.root
     }
 
-    fun applyBottleInfo(e: Entry){
+    fun applyBottleInfo(e: Entry) {
         val percentLeft = e.y
         val timeDelta = e.x
         val date = axisFormatter.getDate(timeDelta)
 
         binding.bottleView.setLevel(percentLeft)
         binding.percentLeft.text = (percentLeft * 100).roundToInt().toString()
-        binding.timeText.text =  SimpleDateFormat("HH:mm").format(date)
+        binding.timeText.text = SimpleDateFormat("HH:mm").format(date)
         binding.dateText.text = SimpleDateFormat("MM/dd").format(date)
     }
 
-    fun highlightAndSelectLast(entries: List<Entry>){
-        if(entries.isNotEmpty()){
+    fun highlightAndSelectLast(entries: List<Entry>) {
+        if (entries.isNotEmpty()) {
             val last = entries.last()
             applyBottleInfo(last)
             val highlight = Highlight(last.x, last.y, 0)
             highlight.dataIndex = entries.size - 1
+            binding.chart.moveViewToX(last.x)
             binding.chart.highlightValue(highlight)
+            binding.chart.invalidate()
         }
     }
 }
