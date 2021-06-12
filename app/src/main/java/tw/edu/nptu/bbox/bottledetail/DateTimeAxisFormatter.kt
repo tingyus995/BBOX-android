@@ -13,7 +13,7 @@ class DateTimeAxisFormatter(var baseTime: Long) : ValueFormatter() {
 
     override fun getAxisLabel(value: Float, axis: AxisBase?): String {
         val date = getDate(value)
-        return SimpleDateFormat("MM/dd HH:mm").format(date)
+        return SimpleDateFormat("HH:mm").format(date)
     }
 
     fun getDate(value: Float): Date{

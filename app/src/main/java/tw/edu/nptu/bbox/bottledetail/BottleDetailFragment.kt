@@ -7,10 +7,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat.getColor
+import androidx.core.content.ContextCompat.getDrawable
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import androidx.transition.TransitionInflater
+import com.github.mikephil.charting.components.Description
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
@@ -70,6 +72,11 @@ class BottleDetailFragment : Fragment() {
             dataset.circleHoleRadius = 7f
             dataset.circleColors = listOf(context?.let { getColor(it, R.color.purple_200) })
             dataset.lineWidth = 3f
+            dataset.setDrawFilled(true)
+            dataset.fillDrawable = context?.let { getDrawable(it, R.drawable.chart_fill_gradient) }
+            dataset.setDrawValues(false)
+            dataset.setDrawVerticalHighlightIndicator(false)
+            dataset.setDrawHorizontalHighlightIndicator(false)
             //dataset.isHighlightEnabled = false
             dataset.color = context?.let { getColor(it, R.color.purple_200) }!!
             val linedata = LineData(dataset)
@@ -82,7 +89,30 @@ class BottleDetailFragment : Fragment() {
 
         })
 
+
+        // remove description
+        val description = Description()
+        description.text = ""
+        binding.chart.description = description
+
+        // disable grid lines
+        binding.chart.xAxis.setDrawGridLines(false)
+        binding.chart.axisRight.setDrawGridLines(false)
+        binding.chart.axisLeft.setDrawGridLines(false)
+
+        // disable axis lines
+        binding.chart.xAxis.setDrawAxisLine(false)
+        binding.chart.axisRight.setDrawAxisLine(false)
+        binding.chart.axisLeft.setDrawAxisLine(false)
+
+        // remove right axis
+        binding.chart.axisRight.setDrawLabels(false)
+
+        // remove legend
+        binding.chart.legend.isEnabled = false
+
         binding.chart.xAxis.valueFormatter = axisFormatter
+        binding.chart.axisLeft.valueFormatter = PercentAxisFormatter()
 
         viewModel.baseTime.observe(viewLifecycleOwner, Observer { baseTime ->
             axisFormatter.baseTime = baseTime
