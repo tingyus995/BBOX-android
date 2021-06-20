@@ -3,4 +3,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="about">About</string>
+    <string name="container">Box</string>
+    <string name="bottles">Bottles</string>
+    <string name="percent_symbol">%</string>
 </resources>

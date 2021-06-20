@@ -21,9 +21,13 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(binding.toolBar)
         val drawerLayout = binding.drawerLayout
         val navController = findNavController(R.id.nav_host_fragment)
-        appBarConfiguration = AppBarConfiguration(navController.graph, drawerLayout)
+        val topLevelDestinations = setOf<Int>(R.id.boxFragment, R.id.bottleList)
+        appBarConfiguration =
+            AppBarConfiguration.Builder(topLevelDestinations).setOpenableLayout(drawerLayout)
+                .build()
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration)
         NavigationUI.setupWithNavController(binding.navigationView, navController)
+        NavigationUI.setupWithNavController(binding.bottomNavigation, navController)
 
     }
 

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/boxFragment"
+        android:title="@string/container"
+        android:icon="@drawable/box_icon"
+        android:menuCategory="alternative"
+        />
+    <item
+        android:id="@+id/bottleList"
+        android:title="@string/bottles"
+        android:icon="@drawable/bottle_icon"
+        />
+</menu>

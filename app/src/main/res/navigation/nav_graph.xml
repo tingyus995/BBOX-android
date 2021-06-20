@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/bottleList"
         android:name="tw.edu.nptu.bbox.bottlelist.BottleListFragment"
-        android:label="Bottle List"
+        android:label="Bottles"
         tools:layout="@layout/fragment_bottle_list" >
         <action
             android:id="@+id/action_bottleList_to_bottleDetailFragment"
@@ -28,4 +28,8 @@
         android:name="tw.edu.nptu.bbox.AboutFragment"
         android:label="fragment_about"
         tools:layout="@layout/fragment_about" />
+    <fragment
+        android:id="@+id/boxFragment"
+        android:name="tw.edu.nptu.bbox.box.BoxFragment"
+        android:label="Box" />
 </navigation>
