@@ -9,10 +9,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
 import android.widget.TextView
 import androidx.appcompat.content.res.AppCompatResources.getDrawable
 import androidx.databinding.BindingAdapter
 import androidx.lifecycle.Observer
+import androidx.lifecycle.viewmodel.compose.viewModel
 import tw.edu.nptu.bbox.R
 import tw.edu.nptu.bbox.databinding.BoxFragmentBinding
 import tw.edu.nptu.bbox.databinding.FragmentBottleListBinding
@@ -35,6 +38,36 @@ class BoxFragment : Fragment() {
         // bind BoxViewModel to view
         binding.viewModel = boxViewModel
 
+        // animation drop down menu
+        val animationItems = listOf("Clockwise", "Counter-clockwise", "Breath", "Firefly")
+        val animationItemsAdapter = ArrayAdapter(requireContext(), R.layout.list_item, animationItems)
+
+        (binding.animationMenu.editText as AutoCompleteTextView).apply {
+            setAdapter(animationItemsAdapter)
+            setOnItemClickListener { parent, view, position, id ->
+                boxViewModel.animationChanged(animationItems[position])
+            }
+        }
+
+        boxViewModel.animation.observe(viewLifecycleOwner, Observer { animation ->
+            (binding.animationMenu.editText as AutoCompleteTextView).setText(animation, false)
+        })
+
+        // Initial animation drop down menu
+        val initialAnimationItems = listOf("Thunder", "Fade")
+        val initialAnimationItemsAdapter = ArrayAdapter(requireContext(), R.layout.list_item, initialAnimationItems)
+
+        (binding.initialAnimationMenu.editText as AutoCompleteTextView).apply {
+            setAdapter(initialAnimationItemsAdapter)
+            setOnItemClickListener { parent, view, position, id ->
+                boxViewModel.initialAnimationChanged(initialAnimationItems[position])
+            }
+        }
+
+        boxViewModel.initialAnimation.observe(viewLifecycleOwner, Observer { animation ->
+            (binding.initialAnimationMenu.editText as AutoCompleteTextView).setText(animation, false)
+        })
+
         boxViewModel.opened.observe(viewLifecycleOwner, Observer { opened ->
             if(opened){
                 openDoor()
@@ -42,6 +75,8 @@ class BoxFragment : Fragment() {
                 closeDoor()
             }
         })
+
+
 
         return binding.root
     }

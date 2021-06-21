@@ -8,6 +8,10 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
 class BoxViewModel : ViewModel() {
+
+    private val db = Firebase.firestore
+    private var docId: String? = null
+
     private val _opened = MutableLiveData<Boolean>()
     val opened: LiveData<Boolean>
     get() = _opened
@@ -20,19 +24,29 @@ class BoxViewModel : ViewModel() {
     val humidity: LiveData<Double>
     get() = _humidity
 
+    private val _animation = MutableLiveData<String>()
+    val animation: LiveData<String>
+    get() = _animation
+
+    private val _initialAnimation = MutableLiveData<String>()
+    val initialAnimation: LiveData<String>
+    get() = _initialAnimation
+
     init {
-        val db = Firebase.firestore
 
         db.collection("container")
             .addSnapshotListener { snapshot, e ->
                 if (snapshot != null) {
                     for (document in snapshot.documents) {
                         val data = document.data
+                        docId = document.id
 
                         if (data != null) {
                             val newTemperature = (data["temperature"] as Number).toDouble()
                             val newOpened = data["opened"] as Boolean
                             val newHumidity = (data["humidity"] as Number).toDouble()
+                            val newAnimation = (data["animation"] as String)
+                            val newInitialAnimation = (data["initial_animation"] as String)
 
                             if(newTemperature != temperature.value){
                                 _temperature.value = newTemperature
@@ -46,6 +60,14 @@ class BoxViewModel : ViewModel() {
                                 _humidity.value = newHumidity
                             }
 
+                            if(newAnimation != animation.value){
+                                _animation.value = newAnimation
+                            }
+
+                            if(newInitialAnimation != initialAnimation.value){
+                                _initialAnimation.value = newInitialAnimation
+                            }
+
                             Log.d("DEBUG", "${humidity.value}")
                         }
 
@@ -54,5 +76,24 @@ class BoxViewModel : ViewModel() {
                     }
                 }
             }
+    }
+
+    fun animationChanged(animation: String){
+        Log.d("DEBUG", animation + "selected!")
+        val id = docId
+        if(id != null){
+            db.collection("container").document(id).update(mapOf(
+                "animation" to animation
+            ))
+        }
+    }
+    fun initialAnimationChanged(animation: String){
+        Log.d("DEBUG", animation + "selected!")
+        val id = docId
+        if(id != null){
+            db.collection("container").document(id).update(mapOf(
+                "initial_animation" to animation
+            ))
+        }
     }
 }
