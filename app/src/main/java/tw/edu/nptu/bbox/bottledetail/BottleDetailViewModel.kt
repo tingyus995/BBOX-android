@@ -25,7 +25,7 @@ class BottleDetailViewModel(val bottleId: String) : ViewModel() {
 
     private val _baseTime = MutableLiveData<Long>()
     val baseTime: LiveData<Long>
-    get() = _baseTime
+        get() = _baseTime
 
     private var first = true
 
@@ -50,33 +50,30 @@ class BottleDetailViewModel(val bottleId: String) : ViewModel() {
                         (data["percent_left"] as Number).toFloat(),
                         data["msg"] as String
                     )
-                    Log.d("DEBUG", "${document.id} => ${document.data}")
-                }
-            }
-
-            db.collection("bottles").document(bottleId).collection("history").orderBy("time", Query.Direction.ASCENDING).addSnapshotListener { snapshot, e ->
-                val entries = mutableListOf<Entry>()
-
-                var base = 0L
-                if (snapshot != null) {
-                    for(document in snapshot.documents){
-                        val data = document.data
+                    // history
+                    val entries = mutableListOf<Entry>()
+                    var base = 0L
+                    var records = data["history"] as List<*>
+                    for (record in records) {
+                        val data = record as Map<*, *>
                         Log.d("DEBUG", "" + data)
                         val time = data?.get("time") as Timestamp
                         val seconds = time.seconds
                         val percent_left = (data.get("percent_left") as Double).toFloat()
 
-                        if(first){
+                        if (first) {
                             entries.add(Entry(0f, percent_left))
                             base = seconds
                             first = false
 
-                        }else{
+                        } else {
                             entries.add(Entry((seconds - base).toFloat(), percent_left))
                         }
+
                     }
                     _baseTime.value = base
                     _history.value = entries
+                    Log.d("DEBUG", "${document.id} => ${document.data}")
                 }
             }
     }
