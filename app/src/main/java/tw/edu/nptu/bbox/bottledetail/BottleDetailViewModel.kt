@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.navigation.compose.navArgument
 import com.github.mikephil.charting.data.Entry
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.Query
@@ -14,6 +15,8 @@ import tw.edu.nptu.bbox.BottleDataUtils
 import tw.edu.nptu.bbox.BottleModel
 
 class BottleDetailViewModel(val bottleId: String) : ViewModel() {
+
+    val db = Firebase.firestore
 
     private val _bottle = MutableLiveData<BottleModel>()
     val bottle: LiveData<BottleModel>
@@ -30,7 +33,6 @@ class BottleDetailViewModel(val bottleId: String) : ViewModel() {
     private var first = true
 
     init {
-        val db = Firebase.firestore
 
         db.collection("bottles").document(bottleId)
             .addSnapshotListener { document, e ->
@@ -76,5 +78,11 @@ class BottleDetailViewModel(val bottleId: String) : ViewModel() {
                     Log.d("DEBUG", "${document.id} => ${document.data}")
                 }
             }
+    }
+
+    fun updateBottleName(name: String){
+        db.collection("bottles").document(bottleId).update(mapOf(
+            "name" to name
+        ))
     }
 }

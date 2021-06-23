@@ -1,11 +1,14 @@
 package tw.edu.nptu.bbox.bottledetail
 
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import androidx.core.content.ContextCompat.getColor
 import androidx.core.content.ContextCompat.getDrawable
 import androidx.lifecycle.Observer
@@ -139,6 +142,25 @@ class BottleDetailFragment : Fragment() {
                 }
             }
         })
+
+        binding.editButton.setOnClickListener { view ->
+            val editorLayout = LayoutInflater.from(context).inflate(R.layout.bottle_name_editor, null, false)
+            val editText = editorLayout.findViewById<EditText>(R.id.bottle_name_edit_text)
+            editText.setText(binding.bottleName.text.toString())
+
+            AlertDialog.Builder(context)
+                .setView(editorLayout)
+                .setTitle("Edit bottle name")
+                .setPositiveButton(android.R.string.ok, DialogInterface.OnClickListener { dialog, which ->
+                    dialog.dismiss()
+                    viewModel.updateBottleName(editText.text.toString())
+
+                })
+                .setNegativeButton(android.R.string.cancel, DialogInterface.OnClickListener{dialog, which ->
+                    dialog.cancel()
+                })
+                .show()
+        }
 
         return binding.root
     }
