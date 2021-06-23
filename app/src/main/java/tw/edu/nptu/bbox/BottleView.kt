@@ -30,6 +30,11 @@ class BottleView(context: Context, attrs: AttributeSet) : ConstraintLayout(conte
         binding.waterBody.backgroundTintList = ColorStateList.valueOf(Color.parseColor(bottleColor.waterBody))
     }
 
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
+        setLevel(level, false)
+    }
+
     fun setLevel(new_level: Float, animate: Boolean = true) {
         val ani_duration = if(animate) duration else 0
         // scale water body
