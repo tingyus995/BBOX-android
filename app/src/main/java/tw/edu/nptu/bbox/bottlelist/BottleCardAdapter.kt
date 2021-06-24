@@ -1,5 +1,6 @@
 package tw.edu.nptu.bbox.bottlelist
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
@@ -25,9 +26,18 @@ class BottleCardAdapter(val clickListener: BottleCardClickListener): ListAdapter
     }
 
     class BottleCardViewHolder(val binding : BottleCardBinding): RecyclerView.ViewHolder(binding.root){
+        val warningText = Color.parseColor("#eb3b5a")
+        val normalText = Color.parseColor("#757575")
 
         fun bind(model: BottleModel, clickListener: BottleCardClickListener){
             binding.bottle = model
+            if(model.percentLeft <= 0.3){
+                binding.percentLeftSymbol.setTextColor(warningText)
+                binding.percentLeft.setTextColor(warningText)
+            }else{
+                binding.percentLeftSymbol.setTextColor(normalText)
+                binding.percentLeft.setTextColor(normalText)
+            }
             binding.bottleView.setColor(model.color)
             binding.bottleView.setLevel(model.percentLeft)
             binding.clickListener = clickListener

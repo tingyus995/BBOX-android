@@ -72,7 +72,7 @@
                 android:id="@+id/percent_left_symbol"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="% Left"
+                android:text="% left"
                 android:textSize="20sp"
                 android:transitionName='@{"bottle_percent_left_" + bottle.id}'
                 app:layout_constraintBaseline_toBaselineOf="@+id/percent_left"
