@@ -16,6 +16,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import androidx.transition.TransitionInflater
 import com.github.mikephil.charting.components.Description
+import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
@@ -23,6 +24,7 @@ import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import tw.edu.nptu.bbox.R
 import tw.edu.nptu.bbox.databinding.FragmentBottleDetailBinding
+import java.security.cert.TrustAnchor
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.math.roundToInt
@@ -70,6 +72,8 @@ class BottleDetailFragment : Fragment() {
         })
 
         viewModel.history.observe(viewLifecycleOwner, Observer { entries ->
+            binding.chart.clear()
+            Log.d("ENTRIES", "" + entries)
             val dataset = LineDataSet(entries, "data")
             dataset.circleRadius = 10f
             dataset.circleHoleRadius = 7f
@@ -83,6 +87,7 @@ class BottleDetailFragment : Fragment() {
             //dataset.isHighlightEnabled = false
             dataset.color = context?.let { getColor(it, R.color.purple_200) }!!
             val linedata = LineData(dataset)
+
             binding.chart.data = linedata
             binding.chart.notifyDataSetChanged()
             binding.chart.invalidate()
@@ -177,12 +182,16 @@ class BottleDetailFragment : Fragment() {
     }
 
     fun highlightAndSelectLast(entries: List<Entry>) {
+        Log.d("GRAPH", "highlightAndSelectLast called!")
         if (entries.isNotEmpty()) {
             val last = entries.last()
             applyBottleInfo(last)
             val highlight = Highlight(last.x, last.y, 0)
             highlight.dataIndex = entries.size - 1
-            binding.chart.moveViewToX(last.x)
+
+            binding.chart.fitScreen()
+            binding.chart.zoom(entries.size / 3.0f, 1.0f, last.x, 0.5f)
+
             binding.chart.highlightValue(highlight)
             binding.chart.invalidate()
         }

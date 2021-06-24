@@ -30,7 +30,7 @@ class BottleDetailViewModel(val bottleId: String) : ViewModel() {
     val baseTime: LiveData<Long>
         get() = _baseTime
 
-    private var first = true
+    //private var first = true
 
     init {
 
@@ -55,6 +55,7 @@ class BottleDetailViewModel(val bottleId: String) : ViewModel() {
                     // history
                     val entries = mutableListOf<Entry>()
                     var base = 0L
+                    var first = true
                     var records = data["history"] as List<*>
                     for (record in records) {
                         val data = record as Map<*, *>
