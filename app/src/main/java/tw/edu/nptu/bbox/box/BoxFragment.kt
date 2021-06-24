@@ -39,7 +39,7 @@ class BoxFragment : Fragment() {
         binding.viewModel = boxViewModel
 
         // animation drop down menu
-        val animationItems = listOf("Clockwise", "Counter-clockwise", "Breath", "Firefly")
+        val animationItems = listOf("Clockwise", "Counter-clockwise", "Breath", "Firefly", "Chase")
         val animationItemsAdapter = ArrayAdapter(requireContext(), R.layout.list_item, animationItems)
 
         (binding.animationMenu.editText as AutoCompleteTextView).apply {
