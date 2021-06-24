@@ -61,7 +61,7 @@ class BottleDetailViewModel(val bottleId: String) : ViewModel() {
                         Log.d("DEBUG", "" + data)
                         val time = data?.get("time") as Timestamp
                         val seconds = time.seconds
-                        val percent_left = (data.get("percent_left") as Double).toFloat()
+                        val percent_left = (data.get("percent_left") as Number).toFloat()
 
                         if (first) {
                             entries.add(Entry(0f, percent_left))

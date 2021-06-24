@@ -6,9 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import tw.edu.nptu.bbox.BottleColor
 import tw.edu.nptu.bbox.BottleColors
-import tw.edu.nptu.bbox.BottleDataUtils
 import tw.edu.nptu.bbox.BottleModel
 
 class BottleListViewModel() : ViewModel(){
@@ -21,7 +19,6 @@ class BottleListViewModel() : ViewModel(){
     val navigateToBottleDetail: LiveData<String?>
     get() = _navigateToBottleDetail
 
-
     init {
 
         val db = Firebase.firestore
@@ -32,6 +29,18 @@ class BottleListViewModel() : ViewModel(){
                 if (snapshot != null) {
                     for (document in snapshot.documents) {
                         val data = document.data
+
+                        val records = data?.get("history") as List<*>
+                        val percent_left = ((records.last() as Map<*, *>)["percent_left"] as Number).toFloat()
+
+                        val msg = StringBuffer()
+
+                        if(percent_left <= 0.3){
+                            msg.append("Please add more juice.")
+                        }else{
+                            msg.append("Until 4:30 p.m.")
+                        }
+
                         newBottles.add(BottleModel(
                             document.id,
                             data?.get("name") as String,
@@ -43,11 +52,10 @@ class BottleListViewModel() : ViewModel(){
                                 "purple" -> BottleColors.purple
                                 else -> BottleColors.white
                             },
-                            (data["percent_left"] as Number).toFloat(),
-                            data["msg"] as String
+                            percent_left,
+                            msg.toString()
                         ))
                         Log.d("DEBUG", "${document.id} => ${document.data}")
-
                     }
                 }
                 _bottles.value = newBottles
